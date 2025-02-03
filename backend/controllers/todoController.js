@@ -66,6 +66,8 @@ const updateTodo = async (req, res) => {
 
 const deleteTodo = async (req, res) => {
   try {
+    // console.log("Deleting Todo ID:", req.params.id);
+    // console.log("Authenticated User:", req.user);
     const todo = await Todo.findById(req.params.id);
     if (!todo) {
       return res.status(404).json({ message: 'Todo not found' });
@@ -76,8 +78,9 @@ const deleteTodo = async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await todo.remove();
-    res.json({ message: 'Todo removed' });
+    // await todo.remove();
+    await Todo.findByIdAndDelete(req?.params?.id);
+    res.json({ message: 'Todo removed', success: true });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
